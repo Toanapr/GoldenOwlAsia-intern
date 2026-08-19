@@ -13,7 +13,7 @@ import {
   ErrorState,
   LoadingState,
 } from "../components/ui/AsyncState";
-import { Activity, Layers3 } from "lucide-react";
+import { Activity } from "lucide-react";
 import { Card } from "../components/ui/Card";
 import { PageHeader } from "../components/ui/PageHeader";
 import { getScoreDistribution } from "../lib/api/reports";
@@ -156,26 +156,11 @@ export function ReportsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-end">
-        <PageHeader
-          eyebrow="Báo cáo / 03"
-          title="Dữ liệu kể câu chuyện gì?"
-          description="Mỗi thanh thể hiện số thí sinh trong bốn khoảng điểm. Di chuột hoặc chạm để xem số lượng chính xác."
-        />
-        <div className="hidden gap-3 lg:flex">
-          <span className="grid size-12 place-items-center rounded-2xl border border-indigo-200 bg-indigo-50 text-indigo-600">
-            <Layers3 className="size-5" />
-          </span>
-          <div>
-            <p className="font-mono text-lg font-bold text-[#11162f]">
-              4 bands
-            </p>
-            <p className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-              Score segmentation
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Thống kê"
+        title="Phổ điểm theo môn thi"
+        description="Mỗi thanh thể hiện số thí sinh trong bốn khoảng điểm. Di chuột hoặc chạm để xem số lượng chính xác."
+      />
 
       {query.isPending && <LoadingState label="Đang tải phổ điểm" />}
       {query.isError && (
@@ -194,7 +179,7 @@ export function ReportsPage() {
         <Card className="overflow-hidden p-0">
           <div className="flex flex-col gap-5 border-b border-slate-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
             <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-xl bg-blue-50 text-brand-700">
+              <span className="grid size-9 place-items-center border border-slate-300 text-brand-700">
                 <Activity className="size-4" aria-hidden="true" />
               </span>
               <div>
@@ -283,8 +268,7 @@ export function ReportsPage() {
                     stackId="scores"
                     fill={band.color}
                     radius={index === bands.length - 1 ? [0, 6, 6, 0] : 0}
-                    isAnimationActive
-                    animationDuration={700}
+                    isAnimationActive={false}
                   />
                 ))}
               </BarChart>

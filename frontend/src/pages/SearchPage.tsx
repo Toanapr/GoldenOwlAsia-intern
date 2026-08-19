@@ -1,11 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  ArrowRight,
-  BadgeCheck,
-  Search,
-  SearchX,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, Search, SearchX } from "lucide-react";
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import { ErrorState, LoadingState } from "../components/ui/AsyncState";
 import { Card } from "../components/ui/Card";
@@ -24,27 +18,22 @@ function ScoreResult({ result }: { result: ScoreLookupData }) {
   }, [result.registrationNumber]);
 
   return (
-    <Card className="overflow-hidden border-blue-200/70">
-      <div className="relative overflow-hidden border-b border-blue-900/10 bg-[#0b1026] px-5 py-5 text-white sm:flex sm:items-center sm:justify-between sm:px-7">
-        <div
-          className="absolute -top-16 right-10 size-40 rounded-full bg-brand-400/15 blur-2xl"
-          aria-hidden="true"
-        />
+    <Card className="overflow-hidden">
+      <div className="border-b border-slate-200 bg-slate-50 px-5 py-5 sm:flex sm:items-center sm:justify-between sm:px-7">
         <div>
-          <p className="flex items-center gap-2 text-[10px] font-extrabold tracking-[0.18em] text-brand-300 uppercase">
-            <BadgeCheck className="size-3.5" aria-hidden="true" /> Kết quả đã
-            xác thực
+          <p className="text-[10px] font-bold tracking-[0.12em] text-slate-500 uppercase">
+            Kết quả điểm thi
           </p>
           <h2
             ref={headingRef}
             tabIndex={-1}
-            className="mt-2 font-mono text-2xl font-bold tracking-wider text-white focus:outline-none"
+            className="mt-2 font-mono text-2xl font-bold tracking-wider text-slate-950 focus:outline-none"
           >
             {result.registrationNumber}
           </h2>
         </div>
         {result.foreignLanguageCode && (
-          <span className="relative mt-3 inline-flex rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-bold text-blue-100 sm:mt-0">
+          <span className="mt-3 inline-flex border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 sm:mt-0">
             Ngoại ngữ: {result.foreignLanguageCode}
           </span>
         )}
@@ -53,7 +42,7 @@ function ScoreResult({ result }: { result: ScoreLookupData }) {
         {result.scores.map((subject) => (
           <div
             key={subject.subjectCode}
-            className="group bg-white px-4 py-5 transition-colors hover:bg-blue-50/60 sm:px-7 sm:py-6"
+            className="bg-white px-4 py-5 transition-colors hover:bg-blue-50/50 sm:px-7 sm:py-6"
           >
             <dt className="text-[10px] font-extrabold tracking-[0.12em] text-slate-400 uppercase">
               {subject.subjectName}
@@ -131,29 +120,13 @@ export function SearchPage() {
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-end">
-        <PageHeader
-          eyebrow="Tra cứu / 02"
-          title="Một dãy số. Toàn bộ kết quả."
-          description="Nhập chính xác 8 chữ số trên giấy báo dự thi để xem kết quả đầy đủ của chín môn."
-        />
-        <div className="hidden items-center gap-3 rounded-2xl border border-blue-200/70 bg-blue-50 px-4 py-3 lg:flex">
-          <Sparkles className="size-4 text-brand-600" aria-hidden="true" />
-          <p className="text-xs font-bold text-blue-900">
-            Tra cứu tức thì
-            <br />
-            <span className="font-medium text-blue-700/70">
-              Từ 1.06M bản ghi
-            </span>
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Tra cứu điểm"
+        title="Tra cứu theo số báo danh"
+        description="Nhập chính xác 8 chữ số trên giấy báo dự thi để xem kết quả đầy đủ của chín môn."
+      />
 
-      <Card className="relative overflow-hidden p-5 sm:p-7">
-        <div
-          className="absolute inset-y-0 left-0 w-1 bg-brand-400"
-          aria-hidden="true"
-        />
+      <Card className="p-5 sm:p-7">
         <form onSubmit={handleSubmit} noValidate>
           <label
             htmlFor="registration-number"
@@ -174,7 +147,7 @@ export function SearchPage() {
                 aria-describedby="registration-hint registration-error"
                 aria-invalid={touched && !valid}
                 placeholder="Ví dụ: 01000001"
-                className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50/70 px-4 font-mono text-lg font-semibold tracking-[0.12em] text-slate-950 transition placeholder:font-sans placeholder:text-sm placeholder:font-medium placeholder:tracking-normal placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-blue-100 focus:outline-none aria-invalid:border-rose-400"
+                className="h-13 w-full border border-slate-300 bg-white px-4 font-mono text-lg font-semibold tracking-[0.12em] text-slate-950 placeholder:font-sans placeholder:text-sm placeholder:font-medium placeholder:tracking-normal placeholder:text-slate-400 focus:border-brand-600 focus:ring-2 focus:ring-blue-100 focus:outline-none aria-invalid:border-rose-400"
               />
               <p
                 id="registration-hint"
@@ -192,7 +165,7 @@ export function SearchPage() {
             <button
               type="submit"
               disabled={!valid || query.isFetching}
-              className="group inline-flex h-14 shrink-0 items-center justify-center gap-3 rounded-2xl bg-[#0b1026] px-6 text-sm font-extrabold text-white shadow-[0_10px_25px_rgba(11,16,38,0.15)] transition hover:-translate-y-0.5 hover:bg-blue-900 focus-visible:outline-2 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none disabled:hover:translate-y-0 sm:self-start"
+              className="group inline-flex h-13 shrink-0 items-center justify-center gap-3 bg-brand-700 px-6 text-sm font-bold text-white transition-colors hover:bg-brand-800 focus-visible:outline-2 disabled:cursor-not-allowed disabled:bg-slate-300 sm:self-start"
             >
               <Search className="size-4" aria-hidden="true" />
               {query.isFetching ? "Đang tìm…" : "Tra cứu"}
@@ -208,7 +181,7 @@ export function SearchPage() {
       <section aria-live="polite" aria-label="Kết quả tra cứu">
         {!submittedNumber && (
           <Card className="border-dashed border-slate-300 bg-white/50 p-10 text-center sm:p-14">
-            <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-blue-50 text-brand-600">
+            <span className="mx-auto grid size-12 place-items-center border border-slate-300 text-brand-700">
               <Search className="size-6" aria-hidden="true" />
             </span>
             <p className="mt-4 text-sm font-bold text-slate-600">

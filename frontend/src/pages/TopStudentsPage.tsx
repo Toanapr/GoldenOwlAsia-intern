@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Award, Crown, Medal, Sparkles, Trophy } from "lucide-react";
+import { Award, Medal, Trophy } from "lucide-react";
 import {
   EmptyState,
   ErrorState,
@@ -102,32 +102,17 @@ export function TopStudentsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-end">
-        <PageHeader
-          eyebrow="Xếp hạng / 04"
-          title="Bảng vàng khối A."
-          description="Xếp hạng theo tổng điểm Toán, Vật lý và Hóa học. Các tiêu chí phụ được áp dụng để kết quả luôn ổn định."
-        />
-        <div className="hidden items-center gap-3 rounded-2xl bg-amber-300 px-4 py-3 text-amber-950 lg:flex">
-          <Crown className="size-5" aria-hidden="true" />
-          <div>
-            <p className="font-mono text-base font-extrabold">30.00 MAX</p>
-            <p className="text-[9px] font-extrabold tracking-wider uppercase opacity-60">
-              Group A benchmark
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Xếp hạng"
+        title="Top 10 thí sinh khối A"
+        description="Xếp hạng theo tổng điểm Toán, Vật lý và Hóa học. Các tiêu chí phụ được áp dụng để kết quả luôn ổn định."
+      />
 
-      <div className="flex flex-wrap gap-2 text-[10px] font-extrabold tracking-wide text-slate-500 uppercase">
+      <div className="flex flex-wrap gap-x-5 gap-y-2 border-y border-slate-200 py-3 text-[11px] font-semibold text-slate-500">
         {["Đủ 3 môn", "Tổng điểm giảm dần", "SBD tăng dần khi đồng điểm"].map(
           (rule) => (
-            <span
-              key={rule}
-              className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm"
-            >
-              <Sparkles className="size-3 text-brand-600" aria-hidden="true" />{" "}
-              {rule}
+            <span key={rule} className="inline-flex items-center gap-1.5">
+              <span className="size-1 bg-[#c33149]" aria-hidden="true" /> {rule}
             </span>
           ),
         )}
@@ -147,53 +132,7 @@ export function TopStudentsPage() {
         />
       )}
       {query.isSuccess && students.length > 0 && (
-        <>
-          <section
-            aria-label="Ba thí sinh dẫn đầu"
-            className="grid gap-3 md:grid-cols-3"
-          >
-            {students.slice(0, 3).map((student, index) => {
-              const Icon = index === 0 ? Trophy : index === 1 ? Medal : Award;
-              const tones = [
-                "bg-[#0b1026] text-white",
-                "bg-white text-[#11162f]",
-                "bg-white text-[#11162f]",
-              ];
-              return (
-                <div
-                  key={student.registrationNumber}
-                  className={`relative overflow-hidden rounded-[24px] border border-slate-200/70 p-5 shadow-[0_12px_35px_rgba(15,23,42,0.06)] ${tones[index]}`}
-                >
-                  {index === 0 && (
-                    <div className="absolute -top-16 -right-12 size-36 rounded-full bg-amber-300/20 blur-2xl" />
-                  )}
-                  <div className="relative flex items-center justify-between">
-                    <span
-                      className={`grid size-10 place-items-center rounded-2xl ${index === 0 ? "bg-amber-300 text-amber-950" : index === 1 ? "bg-slate-100 text-slate-600" : "bg-orange-50 text-orange-700"}`}
-                    >
-                      <Icon className="size-[18px]" aria-hidden="true" />
-                    </span>
-                    <span className="font-mono text-[10px] font-bold opacity-40">
-                      RANK / 0{student.position}
-                    </span>
-                  </div>
-                  <p className="relative mt-6 font-mono text-sm font-bold tracking-wider opacity-70">
-                    {student.registrationNumber}
-                  </p>
-                  <div className="relative mt-2 flex items-end justify-between">
-                    <p className="font-mono text-3xl font-extrabold tracking-[-0.06em]">
-                      {scoreFormatter.format(student.total)}
-                    </p>
-                    <p className="pb-1 text-[9px] font-bold tracking-wider uppercase opacity-45">
-                      Tổng điểm
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </section>
-          <RankingTable students={students} />
-        </>
+        <RankingTable students={students} />
       )}
     </div>
   );

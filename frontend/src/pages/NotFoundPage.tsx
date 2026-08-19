@@ -4,20 +4,19 @@ import { Card } from "../components/ui/Card";
 
 export function NotFoundPage() {
   return (
-    <Card className="relative overflow-hidden bg-[#0b1026] p-10 text-center text-white sm:p-16">
-      <div className="absolute -top-24 left-1/2 size-64 -translate-x-1/2 rounded-full bg-brand-400/20 blur-3xl" />
-      <p className="relative font-mono text-7xl font-extrabold tracking-[-0.08em] text-brand-300">
+    <Card className="border-t-4 border-t-brand-700 p-10 text-center sm:p-16">
+      <p className="font-mono text-7xl font-extrabold tracking-[-0.08em] text-slate-200">
         404
       </p>
-      <h1 className="relative mt-3 text-2xl font-extrabold text-white">
+      <h1 className="mt-3 text-2xl font-extrabold text-slate-950">
         Không tìm thấy trang
       </h1>
-      <p className="relative mt-2 text-sm text-blue-50/60">
+      <p className="mt-2 text-sm text-slate-600">
         Đường dẫn này không tồn tại hoặc đã được thay đổi.
       </p>
       <Link
         to="/"
-        className="relative mt-7 inline-flex items-center gap-2 rounded-2xl bg-brand-400 px-5 py-3 text-sm font-extrabold text-blue-950 transition hover:-translate-y-0.5 hover:bg-brand-300 focus-visible:outline-2"
+        className="mt-7 inline-flex items-center gap-2 bg-brand-700 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-brand-800 focus-visible:outline-2"
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
         Về trang tổng quan

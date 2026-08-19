@@ -1,222 +1,136 @@
-import {
-  ArrowRight,
-  BarChart3,
-  CheckCircle2,
-  Database,
-  Medal,
-  Search,
-  Sparkles,
-  TrendingUp,
-} from "lucide-react";
+import { ArrowRight, BarChart3, Medal, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const shortcuts = [
+const functions = [
   {
     to: "/search",
-    title: "Tra cứu điểm",
-    description: "Kết quả đầy đủ 9 môn chỉ từ một số báo danh.",
+    title: "Tra cứu điểm thi",
+    description: "Nhập số báo danh để xem điểm của từng môn.",
     icon: Search,
-    accent: "bg-brand-400 text-blue-950",
-    number: "01",
   },
   {
     to: "/reports",
-    title: "Khám phá phổ điểm",
-    description: "Nhìn toàn cảnh hơn một triệu kết quả theo từng môn.",
+    title: "Xem phổ điểm",
+    description: "So sánh bốn khoảng điểm trên chín môn thi.",
     icon: BarChart3,
-    accent: "bg-indigo-400 text-indigo-950",
-    number: "02",
   },
   {
     to: "/top-students",
-    title: "Top khối A",
-    description: "Bảng vàng Toán · Lý · Hóa với cách xếp hạng minh bạch.",
+    title: "Xếp hạng khối A",
+    description: "Danh sách thí sinh có tổng Toán, Lý, Hóa cao nhất.",
     icon: Medal,
-    accent: "bg-amber-300 text-amber-950",
-    number: "03",
-  },
-];
-
-const metrics = [
-  {
-    value: "1.061.605",
-    label: "Hồ sơ thí sinh",
-    note: "Toàn quốc",
-    icon: Database,
-  },
-  { value: "09", label: "Môn thi", note: "Đủ dữ liệu", icon: CheckCircle2 },
-  {
-    value: "2024",
-    label: "Kỳ thi THPT",
-    note: "Dataset mới nhất",
-    icon: TrendingUp,
   },
 ];
 
 export function DashboardPage() {
   return (
-    <div className="space-y-7 sm:space-y-9">
-      <section className="grid-noise relative overflow-hidden rounded-[30px] bg-[#0b1026] px-6 py-9 text-white shadow-[0_28px_70px_rgba(11,16,38,0.18)] sm:px-10 sm:py-12 lg:min-h-[430px] lg:px-12">
-        <div className="pointer-events-none absolute -top-36 -right-28 size-[380px] rounded-full bg-brand-400/20 blur-3xl" />
-        <div className="pointer-events-none absolute right-[8%] bottom-[-30%] size-64 rounded-full bg-indigo-500/15 blur-3xl" />
-        <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-brand-300/20 bg-brand-300/10 px-3 py-1.5 text-[11px] font-extrabold tracking-[0.14em] text-brand-200 uppercase">
-              <Sparkles className="size-3.5" aria-hidden="true" />
-              National exam intelligence
-            </div>
-            <h1 className="mt-6 max-w-2xl text-[2.55rem] leading-[1.02] font-extrabold tracking-[-0.06em] sm:text-6xl lg:text-[4rem]">
-              Dữ liệu điểm thi,
-              <span className="mt-1 block text-brand-300">nay đã dễ hiểu.</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-sm leading-7 text-blue-50/65 sm:text-[15px]">
-              Tra cứu nhanh, đọc phổ điểm trực quan và khám phá những thí sinh
-              dẫn đầu từ hơn một triệu bản ghi kỳ thi THPT 2024.
+    <div className="space-y-10">
+      <section className="border-t-4 border-brand-700 bg-white">
+        <div className="grid border-x border-b border-slate-200 lg:grid-cols-[1fr_310px]">
+          <div className="px-6 py-10 sm:px-9 sm:py-12 lg:px-12 lg:py-16">
+            <p className="text-xs font-bold tracking-[0.12em] text-brand-700 uppercase">
+              Kỳ thi tốt nghiệp THPT · 2024
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <h1 className="mt-5 max-w-2xl text-4xl leading-[1.08] font-extrabold tracking-[-0.045em] text-slate-950 sm:text-6xl">
+              Điểm thi trên toàn quốc, trong một trang.
+            </h1>
+            <p className="mt-6 max-w-xl text-[15px] leading-7 text-slate-600">
+              Tra cứu kết quả theo số báo danh, xem phân bố điểm từng môn và
+              danh sách thí sinh dẫn đầu khối A.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
               <Link
                 to="/search"
-                className="group inline-flex items-center gap-3 rounded-2xl bg-brand-400 px-5 py-3.5 text-sm font-extrabold text-blue-950 shadow-[0_12px_35px_rgba(96,165,250,0.22)] transition hover:-translate-y-0.5 hover:bg-brand-300 focus-visible:outline-2 focus-visible:outline-white"
+                className="inline-flex items-center gap-3 bg-brand-700 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-brand-800 focus-visible:outline-2"
               >
-                Tra cứu kết quả
-                <span className="grid size-7 place-items-center rounded-lg bg-blue-950/10">
-                  <ArrowRight
-                    className="size-4 transition-transform group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
-                </span>
+                Tra cứu điểm{" "}
+                <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
               <Link
                 to="/reports"
-                className="text-sm font-bold text-white/70 transition hover:text-white focus-visible:outline-2"
+                className="inline-flex items-center border-b border-slate-400 py-2 text-sm font-bold text-slate-800 hover:border-brand-700 hover:text-brand-700 focus-visible:outline-2"
               >
-                Xem báo cáo <span aria-hidden="true">↗</span>
+                Xem số liệu tổng hợp
               </Link>
             </div>
           </div>
 
-          <div
-            className="relative mx-auto hidden w-full max-w-[330px] lg:block"
-            aria-hidden="true"
-          >
-            <div className="absolute -inset-8 rounded-full border border-white/[0.06]" />
-            <div className="absolute -inset-16 rounded-full border border-white/[0.04]" />
-            <div className="relative rotate-[-2deg] rounded-[28px] border border-white/15 bg-white/[0.09] p-5 shadow-2xl backdrop-blur-md [animation:float_5s_ease-in-out_infinite]">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[9px] font-bold tracking-[0.2em] text-blue-100/45 uppercase">
-                    Candidate profile
-                  </p>
-                  <p className="mt-1 font-mono text-lg font-bold">01000001</p>
-                </div>
-                <span className="rounded-full bg-brand-300/15 px-2.5 py-1 text-[9px] font-bold text-brand-200">
-                  VERIFIED
-                </span>
-              </div>
-              <div className="mt-6 grid grid-cols-3 gap-2">
-                {[
-                  ["TOÁN", "8.4"],
-                  ["VĂN", "6.75"],
-                  ["ANH", "8.0"],
-                ].map(([subject, score]) => (
-                  <div key={subject} className="rounded-2xl bg-black/15 p-3">
-                    <p className="text-[8px] font-bold text-blue-100/40">
-                      {subject}
-                    </p>
-                    <p className="mt-2 font-mono text-xl font-bold text-white">
-                      {score}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4 flex items-center gap-3 rounded-2xl bg-brand-400 p-4 text-blue-950">
-                <TrendingUp className="size-5" />
-                <div className="flex-1">
-                  <p className="text-[9px] font-bold uppercase opacity-60">
-                    Khối A
-                  </p>
-                  <p className="text-sm font-extrabold">Nhóm điểm khá</p>
-                </div>
-                <span className="font-mono text-xl font-bold">19.65</span>
-              </div>
+          <dl className="grid border-t border-slate-200 bg-[#f1f4fb] lg:border-t-0 lg:border-l">
+            <div className="flex items-end justify-between border-b border-slate-200 px-6 py-6 lg:block lg:px-8 lg:py-8">
+              <dt className="text-xs font-semibold text-slate-500">
+                Số thí sinh
+              </dt>
+              <dd className="font-mono text-2xl font-bold tracking-tight text-slate-950 lg:mt-3 lg:text-3xl">
+                1.061.605
+              </dd>
             </div>
-          </div>
+            <div className="flex items-end justify-between border-b border-slate-200 px-6 py-6 lg:block lg:px-8 lg:py-8">
+              <dt className="text-xs font-semibold text-slate-500">
+                Số môn thi
+              </dt>
+              <dd className="font-mono text-2xl font-bold text-slate-950 lg:mt-3 lg:text-3xl">
+                09
+              </dd>
+            </div>
+            <div className="flex items-end justify-between px-6 py-6 lg:block lg:px-8 lg:py-8">
+              <dt className="text-xs font-semibold text-slate-500">
+                Năm dữ liệu
+              </dt>
+              <dd className="font-mono text-2xl font-bold text-slate-950 lg:mt-3 lg:text-3xl">
+                2024
+              </dd>
+            </div>
+          </dl>
         </div>
       </section>
 
-      <section
-        aria-label="Thông tin dữ liệu"
-        className="grid gap-3 sm:grid-cols-3"
-      >
-        {metrics.map(({ icon: Icon, ...metric }) => (
-          <div
-            key={metric.label}
-            className="group flex items-center gap-4 rounded-[22px] border border-slate-200/70 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-950/5 sm:p-5"
-          >
-            <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-blue-50 text-brand-700 transition-colors group-hover:bg-brand-400 group-hover:text-blue-950">
-              <Icon className="size-[18px]" aria-hidden="true" />
-            </span>
-            <div className="min-w-0">
-              <strong className="block font-mono text-xl font-bold tracking-[-0.04em] text-[#11162f] sm:text-2xl">
-                {metric.value}
-              </strong>
-              <span className="block truncate text-xs font-bold text-slate-600">
-                {metric.label}
-              </span>
-            </div>
-            <span className="ml-auto hidden text-[9px] font-bold tracking-wider text-slate-400 uppercase xl:block">
-              {metric.note}
-            </span>
-          </div>
-        ))}
-      </section>
-
-      <section aria-labelledby="features-title" className="pt-2">
-        <div className="flex items-end justify-between gap-4">
+      <section aria-labelledby="functions-title">
+        <div className="grid gap-3 border-b-2 border-slate-900 pb-4 sm:grid-cols-[1fr_auto] sm:items-end">
           <div>
-            <p className="flex items-center gap-2 text-[10px] font-extrabold tracking-[0.2em] text-brand-700 uppercase">
-              <span className="h-px w-6 bg-brand-500" /> Khám phá dữ liệu
-            </p>
+            <p className="text-xs font-bold text-[#c33149]">03 CHỨC NĂNG</p>
             <h2
-              id="features-title"
-              className="mt-3 text-2xl font-extrabold tracking-[-0.04em] text-[#11162f] sm:text-3xl"
+              id="functions-title"
+              className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950"
             >
-              Bắt đầu với một góc nhìn.
+              Bạn cần xem thông tin nào?
             </h2>
           </div>
-          <p className="hidden max-w-xs text-right text-xs leading-5 text-slate-500 sm:block">
-            Ba công cụ, một bộ dữ liệu — được thiết kế để tìm câu trả lời thật
-            nhanh.
+          <p className="text-xs text-slate-500">
+            Dữ liệu được tổng hợp từ kết quả kỳ thi năm 2024.
           </p>
         </div>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          {shortcuts.map(({ icon: Icon, ...item }) => (
+
+        <div className="divide-y divide-slate-200">
+          {functions.map(({ icon: Icon, ...item }, index) => (
             <Link
               key={item.to}
               to={item.to}
-              className="group relative overflow-hidden rounded-[26px] border border-slate-200/70 bg-white p-6 shadow-[0_10px_35px_rgba(15,23,42,0.04)] transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_20px_45px_rgba(15,23,42,0.09)] focus-visible:outline-2"
+              className="group grid gap-4 py-6 transition-colors hover:bg-white sm:grid-cols-[48px_1fr_auto] sm:items-center sm:px-4 focus-visible:outline-2"
             >
-              <span className="absolute top-5 right-5 font-mono text-[10px] font-bold text-slate-300">
-                /{item.number}
+              <span className="font-mono text-sm text-slate-400">
+                0{index + 1}
               </span>
-              <span
-                className={`grid size-12 place-items-center rounded-2xl ${item.accent}`}
-              >
-                <Icon className="size-5" strokeWidth={2.2} aria-hidden="true" />
+              <span className="flex items-start gap-4">
+                <span className="mt-0.5 grid size-9 shrink-0 place-items-center border border-slate-300 text-brand-700 group-hover:border-brand-700">
+                  <Icon
+                    className="size-4"
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                  />
+                </span>
+                <span>
+                  <strong className="block text-base font-bold text-slate-950">
+                    {item.title}
+                  </strong>
+                  <span className="mt-1 block text-sm text-slate-500">
+                    {item.description}
+                  </span>
+                </span>
               </span>
-              <h3 className="mt-8 text-lg font-extrabold tracking-[-0.025em] text-[#11162f]">
-                {item.title}
-              </h3>
-              <p className="mt-2 min-h-12 text-sm leading-6 text-slate-500">
-                {item.description}
-              </p>
-              <span className="mt-6 inline-flex items-center gap-2 text-xs font-extrabold text-brand-700">
-                Khám phá{" "}
-                <ArrowRight
-                  className="size-4 transition-transform group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
-              </span>
+              <ArrowRight
+                className="ml-auto hidden size-5 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-brand-700 sm:block"
+                aria-hidden="true"
+              />
             </Link>
           ))}
         </div>
