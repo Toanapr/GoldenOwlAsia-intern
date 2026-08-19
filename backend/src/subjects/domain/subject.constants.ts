@@ -1,0 +1,68 @@
+import { SubjectCode } from './subject-code.enum';
+import { Subject } from './subject';
+
+export const SUBJECTS: readonly Subject[] = Object.freeze([
+  new Subject({
+    code: SubjectCode.Math,
+    displayName: 'Toán',
+    csvColumn: 'toan',
+    entityField: 'math',
+    order: 1,
+  }),
+  new Subject({
+    code: SubjectCode.Literature,
+    displayName: 'Ngữ văn',
+    csvColumn: 'ngu_van',
+    entityField: 'literature',
+    order: 2,
+  }),
+  new Subject({
+    code: SubjectCode.ForeignLanguage,
+    displayName: 'Ngoại ngữ',
+    csvColumn: 'ngoai_ngu',
+    entityField: 'foreignLanguage',
+    order: 3,
+  }),
+  new Subject({
+    code: SubjectCode.Physics,
+    displayName: 'Vật lý',
+    csvColumn: 'vat_li',
+    entityField: 'physics',
+    order: 4,
+  }),
+  new Subject({
+    code: SubjectCode.Chemistry,
+    displayName: 'Hóa học',
+    csvColumn: 'hoa_hoc',
+    entityField: 'chemistry',
+    order: 5,
+  }),
+  new Subject({
+    code: SubjectCode.Biology,
+    displayName: 'Sinh học',
+    csvColumn: 'sinh_hoc',
+    entityField: 'biology',
+    order: 6,
+  }),
+  new Subject({
+    code: SubjectCode.History,
+    displayName: 'Lịch sử',
+    csvColumn: 'lich_su',
+    entityField: 'history',
+    order: 7,
+  }),
+  new Subject({
+    code: SubjectCode.Geography,
+    displayName: 'Địa lý',
+    csvColumn: 'dia_li',
+    entityField: 'geography',
+    order: 8,
+  }),
+  new Subject({
+    code: SubjectCode.CivicEducation,
+    displayName: 'Giáo dục công dân',
+    csvColumn: 'gdcd',
+    entityField: 'civicEducation',
+    order: 9,
+  }),
+]);
