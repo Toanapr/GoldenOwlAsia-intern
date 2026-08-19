@@ -1,13 +1,13 @@
-function requireEnvironmentVariable(name: 'VITE_API_URL') {
-  const value = import.meta.env[name]
+function requireEnvironmentVariable(name: "VITE_API_URL") {
+  const value = import.meta.env[name];
 
   if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`)
+    throw new Error(`Missing required environment variable: ${name}`);
   }
 
-  return value
+  return value;
 }
 
 export const environment = {
-  apiUrl: requireEnvironmentVariable('VITE_API_URL'),
-} as const
+  apiUrl: requireEnvironmentVariable("VITE_API_URL"),
+} as const;

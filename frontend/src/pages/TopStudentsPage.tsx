@@ -1,4 +1,4 @@
-import { PagePlaceholder } from '../components/ui/PagePlaceholder'
+import { PagePlaceholder } from "../components/ui/PagePlaceholder";
 
 export function TopStudentsPage() {
   return (
@@ -7,5 +7,5 @@ export function TopStudentsPage() {
       title="Top 10 thí sinh khối A"
       description="Bảng xếp hạng sẽ sử dụng kết quả deterministic từ API Top Group A."
     />
-  )
+  );
 }

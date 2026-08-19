@@ -1,4 +1,4 @@
-import { PagePlaceholder } from '../components/ui/PagePlaceholder'
+import { PagePlaceholder } from "../components/ui/PagePlaceholder";
 
 export function SearchPage() {
   return (
@@ -7,5 +7,5 @@ export function SearchPage() {
       title="Tìm điểm theo số báo danh"
       description="Form tra cứu và kết quả chi tiết sẽ được triển khai sau khi API lookup ổn định."
     />
-  )
+  );
 }

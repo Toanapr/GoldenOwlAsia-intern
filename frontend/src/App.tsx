@@ -1,9 +1,9 @@
-import { Route, Routes } from 'react-router-dom'
-import { AppLayout } from './components/layout/AppLayout'
-import { DashboardPage } from './pages/DashboardPage'
-import { ReportsPage } from './pages/ReportsPage'
-import { SearchPage } from './pages/SearchPage'
-import { TopStudentsPage } from './pages/TopStudentsPage'
+import { Route, Routes } from "react-router-dom";
+import { AppLayout } from "./components/layout/AppLayout";
+import { DashboardPage } from "./pages/DashboardPage";
+import { ReportsPage } from "./pages/ReportsPage";
+import { SearchPage } from "./pages/SearchPage";
+import { TopStudentsPage } from "./pages/TopStudentsPage";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path="top-students" element={<TopStudentsPage />} />
       </Route>
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;
