@@ -9,6 +9,6 @@ import { ExamResultsService } from './exam-results.service';
   imports: [TypeOrmModule.forFeature([ExamResult]), SubjectsModule],
   controllers: [ExamResultsController],
   providers: [ExamResultsService],
-  exports: [TypeOrmModule, ExamResultsService],
+  exports: [TypeOrmModule],
 })
 export class ExamResultsModule {}

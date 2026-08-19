@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
-import { CommonModule } from './common/common.module';
 import { isValidCorsAllowlist } from './common/http/configure-app';
 import { DataImportModule } from './data-import/data-import.module';
 import { DatabaseModule } from './database/database.module';
@@ -9,7 +8,6 @@ import { databaseConfig } from './database/database.config';
 import { ExamResultsModule } from './exam-results/exam-results.module';
 import { HealthModule } from './health/health.module';
 import { ReportsModule } from './reports/reports.module';
-import { SubjectsModule } from './subjects/subjects.module';
 
 @Module({
   imports: [
@@ -39,9 +37,7 @@ import { SubjectsModule } from './subjects/subjects.module';
         abortEarly: false,
       },
     }),
-    CommonModule,
     DatabaseModule,
-    SubjectsModule,
     ExamResultsModule,
     ReportsModule,
     DataImportModule,
