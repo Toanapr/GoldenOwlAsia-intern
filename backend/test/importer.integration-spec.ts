@@ -59,4 +59,18 @@ describe('ExamResultImporterService', () => {
     expect(result.math).toBe('9.00');
     expect(await dataSource.getRepository(ExamResult).count()).toBe(2);
   });
+
+  it('uses the last occurrence of a duplicate within one batch', async () => {
+    const summary = await importer.importFile(
+      fixture('exam-results-duplicate.csv'),
+    );
+    const result = await dataSource
+      .getRepository(ExamResult)
+      .findOneByOrFail({ registrationNumber: '01000002' });
+
+    expect(summary.processed).toBe(2);
+    expect(summary.upserted).toBe(1);
+    expect(summary.databaseRows).toBe(2);
+    expect(result.math).toBe('9.20');
+  });
 });

@@ -101,10 +101,15 @@ export class ExamResultImporterService {
   }
 
   private async upsertBatch(batch: ExamResultImportRecord[]): Promise<number> {
-    await this.repository.upsert(batch, {
+    const uniqueRecords = [
+      ...new Map(
+        batch.map((record) => [record.registrationNumber, record]),
+      ).values(),
+    ];
+    await this.repository.upsert(uniqueRecords, {
       conflictPaths: ['registrationNumber'],
     });
-    return batch.length;
+    return uniqueRecords.length;
   }
 
   private async validateFile(filePath: string): Promise<void> {
