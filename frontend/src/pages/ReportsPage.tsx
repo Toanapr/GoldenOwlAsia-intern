@@ -249,7 +249,7 @@ export function ReportsPage() {
                   tick={{
                     fill: "var(--color-chart-axis)",
                     fontSize: 12,
-                    fontFamily: "Atkinson Hyperlegible",
+                    fontFamily: "Be Vietnam Pro",
                   }}
                   axisLine={false}
                   tickLine={false}

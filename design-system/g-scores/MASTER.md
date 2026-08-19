@@ -40,15 +40,20 @@
 
 ### Typography
 
-- **Heading Font:** Atkinson Hyperlegible
-- **Body Font:** Atkinson Hyperlegible
-- **Mood:** accessible, readable, inclusive, WCAG, dyslexia-friendly, clear
-- **Google Fonts:** [Atkinson Hyperlegible + Atkinson Hyperlegible](https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap)
+- **Heading Font:** Be Vietnam Pro
+- **Body Font:** Be Vietnam Pro
+- **Mood:** Vietnamese-native, readable, contemporary, clear
+- **Google Fonts:** [Be Vietnam Pro](https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap)
 
-**CSS Import:**
+**HTML Embed:**
 
-```css
-@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap");
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
 ```
 
 ### Spacing Variables

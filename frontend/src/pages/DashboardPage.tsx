@@ -56,7 +56,7 @@ export function DashboardPage() {
           </div>
 
           <dl className="grid border-t border-slate-200 bg-muted lg:border-t-0 lg:border-l">
-            <div className="flex items-end justify-between border-b border-slate-200 px-6 py-6 lg:block lg:px-8 lg:py-8">
+            <div className="flex items-end justify-between border-b-2 border-slate-300 px-6 py-6 lg:block lg:px-8 lg:py-8">
               <dt className="text-xs font-semibold text-slate-500">
                 Số thí sinh
               </dt>
@@ -64,7 +64,7 @@ export function DashboardPage() {
                 1.061.605
               </dd>
             </div>
-            <div className="flex items-end justify-between border-b border-slate-200 px-6 py-6 lg:block lg:px-8 lg:py-8">
+            <div className="flex items-end justify-between border-b-2 border-slate-300 px-6 py-6 lg:block lg:px-8 lg:py-8">
               <dt className="text-xs font-semibold text-slate-500">
                 Số môn thi
               </dt>
