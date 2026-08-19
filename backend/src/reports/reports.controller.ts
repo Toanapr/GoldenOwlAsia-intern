@@ -5,6 +5,10 @@ import {
   ScoreDistributionDataDto,
   ScoreDistributionResponseDto,
 } from './dto/score-distribution-response.dto';
+import {
+  TopGroupADataDto,
+  TopGroupAResponseDto,
+} from './dto/top-group-a-response.dto';
 import { ReportsService } from './reports.service';
 
 @ApiTags('Reports')
@@ -19,5 +23,12 @@ export class ReportsController {
     ApiSuccessResponse<ScoreDistributionDataDto>
   > {
     return apiResponse(await this.reportsService.getScoreDistribution());
+  }
+
+  @Get('top-group-a')
+  @ApiOperation({ summary: 'Get the top 10 Group A candidates' })
+  @ApiOkResponse({ type: TopGroupAResponseDto })
+  async getTopGroupA(): Promise<ApiSuccessResponse<TopGroupADataDto>> {
+    return apiResponse(await this.reportsService.getTopGroupA());
   }
 }

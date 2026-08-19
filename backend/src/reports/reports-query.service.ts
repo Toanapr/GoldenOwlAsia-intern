@@ -1,8 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { SubjectCode } from '../subjects/domain/subject-code.enum';
 import { SubjectRegistry } from '../subjects/domain/subject-registry';
 
 export type DistributionAggregate = Record<string, number>;
+
+export interface GroupARow {
+  registrationNumber: string;
+  math: string;
+  physics: string;
+  chemistry: string;
+  total: string;
+}
 
 @Injectable()
 export class ReportsQueryService {
@@ -30,6 +39,45 @@ export class ReportsQueryService {
       throw new Error('Score distribution query returned an unexpected result');
     }
     return rows[0] as DistributionAggregate;
+  }
+
+  async getTopGroupA(limit = 10): Promise<GroupARow[]> {
+    const math = `results.${this.subjectColumn(SubjectCode.Math)}`;
+    const physics = `results.${this.subjectColumn(SubjectCode.Physics)}`;
+    const chemistry = `results.${this.subjectColumn(SubjectCode.Chemistry)}`;
+    const total = `(${math} + ${physics} + ${chemistry})`;
+    const rows = (await this.dataSource.query(
+      `
+        SELECT
+          "registration_number" AS "registrationNumber",
+          ${math}::text AS "math",
+          ${physics}::text AS "physics",
+          ${chemistry}::text AS "chemistry",
+          ${total}::text AS "total"
+        FROM "exam_results" AS results
+        WHERE ${math} IS NOT NULL
+          AND ${physics} IS NOT NULL
+          AND ${chemistry} IS NOT NULL
+        ORDER BY
+          ${total} DESC,
+          ${math} DESC,
+          ${physics} DESC,
+          ${chemistry} DESC,
+          "registration_number" ASC
+        LIMIT $1
+      `,
+      [limit],
+    )) as unknown;
+    if (!Array.isArray(rows)) {
+      throw new Error('Top Group A query returned an unexpected result');
+    }
+    return rows as GroupARow[];
+  }
+
+  private subjectColumn(code: SubjectCode): string {
+    return this.quoteIdentifier(
+      this.subjectRegistry.require(code).databaseColumn,
+    );
   }
 
   private quoteIdentifier(identifier: string): string {

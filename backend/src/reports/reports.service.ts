@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { SubjectRegistry } from '../subjects/domain/subject-registry';
+import { SubjectCode } from '../subjects/domain/subject-code.enum';
 import {
   DistributionBandDto,
   DistributionBandKey,
   ScoreDistributionDataDto,
 } from './dto/score-distribution-response.dto';
+import { TopGroupADataDto } from './dto/top-group-a-response.dto';
 import { ReportsQueryService } from './reports-query.service';
 
 const BANDS: readonly Omit<DistributionBandDto, 'count'>[] = [
@@ -41,6 +43,28 @@ export class ReportsService {
           ...band,
           count: Number(aggregate[`${subject.code}_${band.key}`]),
         })),
+      })),
+    };
+  }
+
+  async getTopGroupA(): Promise<TopGroupADataDto> {
+    const rows = await this.queryService.getTopGroupA(10);
+    return {
+      group: {
+        code: 'A',
+        subjects: [
+          SubjectCode.Math,
+          SubjectCode.Physics,
+          SubjectCode.Chemistry,
+        ],
+      },
+      students: rows.map((row, index) => ({
+        position: index + 1,
+        registrationNumber: row.registrationNumber,
+        math: Number(row.math),
+        physics: Number(row.physics),
+        chemistry: Number(row.chemistry),
+        total: Number(row.total),
       })),
     };
   }
