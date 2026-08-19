@@ -13,6 +13,9 @@ describe('SubjectRegistry', () => {
 
   it('looks up a known subject', () => {
     expect(registry.get(SubjectCode.Math)?.csvColumn).toBe('toan');
+    expect(registry.get(SubjectCode.ForeignLanguage)?.databaseColumn).toBe(
+      'foreign_language',
+    );
   });
 
   it('rejects an unknown subject', () => {

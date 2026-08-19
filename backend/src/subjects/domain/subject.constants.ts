@@ -7,6 +7,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Toán',
     csvColumn: 'toan',
     entityField: 'math',
+    databaseColumn: 'math',
     order: 1,
   }),
   new Subject({
@@ -14,6 +15,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Ngữ văn',
     csvColumn: 'ngu_van',
     entityField: 'literature',
+    databaseColumn: 'literature',
     order: 2,
   }),
   new Subject({
@@ -21,6 +23,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Ngoại ngữ',
     csvColumn: 'ngoai_ngu',
     entityField: 'foreignLanguage',
+    databaseColumn: 'foreign_language',
     order: 3,
   }),
   new Subject({
@@ -28,6 +31,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Vật lý',
     csvColumn: 'vat_li',
     entityField: 'physics',
+    databaseColumn: 'physics',
     order: 4,
   }),
   new Subject({
@@ -35,6 +39,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Hóa học',
     csvColumn: 'hoa_hoc',
     entityField: 'chemistry',
+    databaseColumn: 'chemistry',
     order: 5,
   }),
   new Subject({
@@ -42,6 +47,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Sinh học',
     csvColumn: 'sinh_hoc',
     entityField: 'biology',
+    databaseColumn: 'biology',
     order: 6,
   }),
   new Subject({
@@ -49,6 +55,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Lịch sử',
     csvColumn: 'lich_su',
     entityField: 'history',
+    databaseColumn: 'history',
     order: 7,
   }),
   new Subject({
@@ -56,6 +63,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Địa lý',
     csvColumn: 'dia_li',
     entityField: 'geography',
+    databaseColumn: 'geography',
     order: 8,
   }),
   new Subject({
@@ -63,6 +71,7 @@ export const SUBJECTS: readonly Subject[] = Object.freeze([
     displayName: 'Giáo dục công dân',
     csvColumn: 'gdcd',
     entityField: 'civicEducation',
+    databaseColumn: 'civic_education',
     order: 9,
   }),
 ]);

@@ -8,6 +8,7 @@ export interface SubjectMetadata {
   displayName: string;
   csvColumn: string;
   entityField: string;
+  databaseColumn: string;
   order: number;
 }
 
@@ -16,6 +17,7 @@ export class Subject {
   readonly displayName: string;
   readonly csvColumn: string;
   readonly entityField: string;
+  readonly databaseColumn: string;
   readonly order: number;
 
   constructor(metadata: SubjectMetadata) {
@@ -23,6 +25,7 @@ export class Subject {
     this.displayName = metadata.displayName;
     this.csvColumn = metadata.csvColumn;
     this.entityField = metadata.entityField;
+    this.databaseColumn = metadata.databaseColumn;
     this.order = metadata.order;
     Object.freeze(this);
   }
