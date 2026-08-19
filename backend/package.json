@@ -22,7 +22,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:integration": "jest --config ./test/jest-integration.json --runInBand",
     "migration:run": "typeorm-ts-node-commonjs -d src/database/typeorm.datasource.ts migration:run",
-    "migration:revert": "typeorm-ts-node-commonjs -d src/database/typeorm.datasource.ts migration:revert"
+    "migration:revert": "typeorm-ts-node-commonjs -d src/database/typeorm.datasource.ts migration:revert",
+    "data:import": "npm run build && node dist/data-import/import-main.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -32,6 +33,7 @@
     "@nestjs/typeorm": "^11.0.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "csv-parse": "^7.0.2",
     "dotenv": "^17.4.1",
     "joi": "^18.2.3",
     "pg": "^8.23.0",
