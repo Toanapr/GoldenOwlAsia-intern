@@ -27,7 +27,10 @@ function readOption(args: string[], name: string): string | undefined {
   return index >= 0 ? args[index + 1] : undefined;
 }
 
-function parseOptions(args: string[]): CliOptions | null {
+export function parseOptions(
+  args: string[],
+  invocationDirectory = process.env.INIT_CWD ?? process.cwd(),
+): CliOptions | null {
   if (args.includes('--help') || args.includes('-h')) return null;
   const file = readOption(args, 'file');
   if (!file) throw new Error('Missing required option --file');
@@ -36,7 +39,7 @@ function parseOptions(args: string[]): CliOptions | null {
   if (!Number.isSafeInteger(batchSize) || batchSize <= 0) {
     throw new Error('--batch-size must be a positive integer');
   }
-  return { file: resolve(file), batchSize };
+  return { file: resolve(invocationDirectory, file), batchSize };
 }
 
 async function main(): Promise<void> {
@@ -55,8 +58,10 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : String(error);
-  Logger.error(message, undefined, 'DataImportCli');
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  void main().catch((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    Logger.error(message, undefined, 'DataImportCli');
+    process.exitCode = 1;
+  });
+}
