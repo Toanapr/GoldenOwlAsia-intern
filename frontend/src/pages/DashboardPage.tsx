@@ -32,7 +32,7 @@ export function DashboardPage() {
               Kỳ thi tốt nghiệp THPT · 2024
             </p>
             <h1 className="mt-5 max-w-2xl text-4xl leading-[1.08] font-bold tracking-[-0.035em] text-foreground sm:text-6xl">
-              Điểm thi trên toàn quốc, trong một trang.
+              Tra cứu điểm thi THPT 2024
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground">
               Tra cứu kết quả theo số báo danh, xem phân bố điểm từng môn và
