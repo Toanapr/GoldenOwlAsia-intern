@@ -10,7 +10,7 @@ config({
 
 export default new DataSource({
   type: 'postgres',
-  url: process.env.DATABASE_URL,
+  url: process.env.DATABASE_ADMIN_URL || process.env.DATABASE_URL,
   entities: [ExamResult],
   migrations: [CreateExamResults2026081900000],
   synchronize: false,

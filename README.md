@@ -2,7 +2,9 @@
 
 Search and analyze more than one million results from Vietnam's 2024 National High School Graduation Examination. The project is built as a TypeScript modular monolith, with an emphasis on safe large-dataset imports, verifiable business rules, and a clear lookup experience across desktop and mobile devices.
 
-**After starting the project locally:** [Web app](http://localhost:8080) · [Swagger API](http://localhost:3000/docs) · [Health check](http://localhost:3000/health)
+**Live demo:** [Web app](https://goldenowlasia-intern.netlify.app/) · [Swagger API](https://g-scores-api-ea0ea7a5ceca.herokuapp.com/docs) · [Health check](https://g-scores-api-ea0ea7a5ceca.herokuapp.com/health)
+
+**Local:** [Web app](http://localhost:8080) · [Swagger API](http://localhost:3000/docs) · [Health check](http://localhost:3000/health)
 
 ![G-Scores dashboard](screenshots/dashboard.png)
 
@@ -23,9 +25,9 @@ Search and analyze more than one million results from Vietnam's 2024 National Hi
 | -------- | ------------------------------------------------------------------ |
 | Frontend | React 19, Vite, TypeScript, Tailwind CSS, TanStack Query, Recharts |
 | Backend  | NestJS 11, TypeORM, Joi, Swagger, Helmet                           |
-| Database | PostgreSQL 17                                                      |
+| Database | PostgreSQL 17, Neon                                                |
 | Testing  | Jest, Supertest, Vitest, React Testing Library                     |
-| Runtime  | Docker Compose, multi-stage Docker images, Nginx                   |
+| Runtime  | Docker Compose, multi-stage Docker images, Nginx, Heroku, Netlify  |
 
 ## Docker quick start
 
@@ -38,7 +40,7 @@ docker compose run --rm backend npm run data:import:prod -w backend -- \
   --file=/data/diem_thi_thpt_2024.csv
 ```
 
-Open `http://localhost:8080`. The backend runs database migrations before startup. Import remains an explicit command because the dataset is large and should not delay every application restart. The command is safe to run again and does not create duplicate records.
+Open `http://localhost:8080`. Compose runs migrations through a one-shot `migration` service before starting the backend. Import remains an explicit command because the dataset is large and should not delay every application restart. The command is safe to run again and does not create duplicate records.
 
 Inspect or stop the stack with:
 
@@ -125,19 +127,20 @@ Successful core API responses use a `{ data, meta }` envelope. Error responses c
 
 ## Environment variables
 
-| Variable              | Used by        | Description                                              |
-| --------------------- | -------------- | -------------------------------------------------------- |
-| `NODE_ENV`            | Backend        | `development`, `test`, or `production`                   |
-| `DATABASE_URL`        | Local backend  | PostgreSQL connection URL                                |
-| `TEST_DATABASE_URL`   | Backend tests  | Separate database for integration and end-to-end tests   |
-| `PORT`                | Backend        | API port                                                 |
-| `CORS_ORIGIN`         | Local backend  | Comma-separated origin allowlist; wildcards are rejected |
-| `VITE_API_URL`        | Local frontend | API base URL used by Vite                                |
-| `DOCKER_CORS_ORIGIN`  | Compose        | Browser origins allowed to call the containerized API    |
-| `DOCKER_VITE_API_URL` | Compose build  | Public API URL embedded in the Vite bundle               |
-| `POSTGRES_PORT`       | Compose        | PostgreSQL port exposed to the host                      |
-| `BACKEND_PORT`        | Compose        | Backend port exposed to the host                         |
-| `FRONTEND_PORT`       | Compose        | Frontend port exposed to the host                        |
+| Variable              | Used by          | Description                                              |
+| --------------------- | ---------------- | -------------------------------------------------------- |
+| `NODE_ENV`            | Backend          | `development`, `test`, or `production`                   |
+| `DATABASE_URL`        | Backend/importer | Pooled runtime URL, or the local PostgreSQL URL           |
+| `DATABASE_ADMIN_URL`  | Migrations       | Optional direct URL; falls back to `DATABASE_URL`         |
+| `TEST_DATABASE_URL`   | Backend tests    | Separate database for integration and end-to-end tests   |
+| `PORT`                | Backend          | API port; Heroku supplies this in production              |
+| `CORS_ORIGIN`         | Backend          | Comma-separated origin allowlist; wildcards are rejected |
+| `VITE_API_URL`        | Frontend build   | Public API base URL embedded by Vite                     |
+| `DOCKER_CORS_ORIGIN`  | Compose          | Browser origins allowed to call the containerized API    |
+| `DOCKER_VITE_API_URL` | Compose build    | Public API URL embedded in the Vite bundle               |
+| `POSTGRES_PORT`       | Compose          | PostgreSQL port exposed to the host                      |
+| `BACKEND_PORT`        | Compose          | Backend port exposed to the host                         |
+| `FRONTEND_PORT`       | Compose          | Frontend port exposed to the host                        |
 
 For production, set `DOCKER_CORS_ORIGIN` to the exact frontend domain and `DOCKER_VITE_API_URL` to the public HTTPS API URL before building the frontend image. Never place secrets in the image or in `VITE_*` variables because those values are publicly visible in the browser bundle.
 

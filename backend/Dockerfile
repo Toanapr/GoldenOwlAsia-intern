@@ -19,5 +19,4 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=build /app/backend/dist backend/dist
 USER node
 EXPOSE 3000
-CMD ["sh", "-c", "npm run migration:run:prod -w backend && npm run start:prod -w backend"]
-
+CMD ["npm", "run", "start:prod", "-w", "backend"]
