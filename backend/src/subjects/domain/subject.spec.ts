@@ -26,4 +26,9 @@ describe('Subject', () => {
     'rejects invalid score %s',
     (score) => expect(subject.isValidScore(score)).toBe(false),
   );
+
+  it('reads its score from the configured entity field', () => {
+    expect(subject.scoreFrom({ math: '8.40' })).toBe('8.40');
+    expect(subject.scoreFrom({ math: null })).toBeNull();
+  });
 });

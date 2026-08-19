@@ -31,6 +31,15 @@ export class Subject {
     return SCORE_PATTERN.test(value);
   }
 
+  scoreFrom(source: object): string | null {
+    const value = (source as Record<string, unknown>)[this.entityField];
+    if (value === null || value === undefined) return null;
+    if (typeof value === 'string' || typeof value === 'number') {
+      return String(value);
+    }
+    throw new TypeError(`Invalid score value for ${this.code}`);
+  }
+
   classify(value: string | number): ScoreBand {
     const score = typeof value === 'number' ? value : Number(value);
     if (!Number.isFinite(score) || score < 0 || score > 10) {
