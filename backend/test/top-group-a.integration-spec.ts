@@ -66,6 +66,10 @@ describe('Top Group A report', () => {
 
   it('returns exactly ten complete candidates with deterministic tie-breaks', async () => {
     const result = await service.getTopGroupA();
+    expect(result.group).toEqual({
+      code: 'A',
+      subjects: ['math', 'physics', 'chemistry'],
+    });
     expect(result.students).toHaveLength(10);
     expect(result.students.map(({ position }) => position)).toEqual([
       1, 2, 3, 4, 5, 6, 7, 8, 9, 10,

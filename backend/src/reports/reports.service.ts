@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SubjectRegistry } from '../subjects/domain/subject-registry';
 import { SubjectCode } from '../subjects/domain/subject-code.enum';
+import { createGroupA, SubjectGroup } from '../subjects/domain/subject-group';
 import {
   DistributionBandDto,
   DistributionBandKey,
@@ -27,10 +28,14 @@ const BANDS: readonly Omit<DistributionBandDto, 'count'>[] = [
 
 @Injectable()
 export class ReportsService {
+  private readonly groupA: SubjectGroup;
+
   constructor(
     private readonly queryService: ReportsQueryService,
     private readonly subjectRegistry: SubjectRegistry,
-  ) {}
+  ) {
+    this.groupA = createGroupA(this.subjectRegistry.getAll());
+  }
 
   async getScoreDistribution(): Promise<ScoreDistributionDataDto> {
     const aggregate = await this.queryService.getScoreDistribution();
@@ -48,22 +53,18 @@ export class ReportsService {
   }
 
   async getTopGroupA(): Promise<TopGroupADataDto> {
-    const rows = await this.queryService.getTopGroupA(10);
+    const rows = await this.queryService.getTopSubjectGroup(this.groupA, 10);
     return {
       group: {
-        code: 'A',
-        subjects: [
-          SubjectCode.Math,
-          SubjectCode.Physics,
-          SubjectCode.Chemistry,
-        ],
+        code: this.groupA.code,
+        subjects: this.groupA.subjects.map((subject) => subject.code),
       },
       students: rows.map((row, index) => ({
         position: index + 1,
         registrationNumber: row.registrationNumber,
-        math: Number(row.math),
-        physics: Number(row.physics),
-        chemistry: Number(row.chemistry),
+        math: Number(row.scores[SubjectCode.Math]),
+        physics: Number(row.scores[SubjectCode.Physics]),
+        chemistry: Number(row.scores[SubjectCode.Chemistry]),
         total: Number(row.total),
       })),
     };

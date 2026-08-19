@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { SubjectCode } from '../subjects/domain/subject-code.enum';
+import { SubjectGroup } from '../subjects/domain/subject-group';
 import { SubjectRegistry } from '../subjects/domain/subject-registry';
 
 export type DistributionAggregate = Record<string, number>;
 
-export interface GroupARow {
+export interface SubjectGroupRow {
   registrationNumber: string;
-  math: string;
-  physics: string;
-  chemistry: string;
+  scores: Partial<Record<SubjectCode, string>>;
   total: string;
 }
 
@@ -41,37 +40,55 @@ export class ReportsQueryService {
     return rows[0] as DistributionAggregate;
   }
 
-  async getTopGroupA(limit = 10): Promise<GroupARow[]> {
-    const math = `results.${this.subjectColumn(SubjectCode.Math)}`;
-    const physics = `results.${this.subjectColumn(SubjectCode.Physics)}`;
-    const chemistry = `results.${this.subjectColumn(SubjectCode.Chemistry)}`;
-    const total = `(${math} + ${physics} + ${chemistry})`;
+  async getTopSubjectGroup(
+    group: SubjectGroup,
+    limit = 10,
+  ): Promise<SubjectGroupRow[]> {
+    const subjectColumns = group.subjects.map((subject) => ({
+      subject,
+      expression: `results.${this.subjectColumn(subject.code)}`,
+    }));
+    const total = `(${subjectColumns
+      .map(({ expression }) => expression)
+      .join(' + ')})`;
+    const scoreSelections = subjectColumns
+      .map(
+        ({ subject, expression }) =>
+          `${expression}::text AS ${this.quoteIdentifier(subject.code)}`,
+      )
+      .join(',\n          ');
+    const completeScoreConditions = subjectColumns
+      .map(({ expression }) => `${expression} IS NOT NULL`)
+      .join('\n          AND ');
+    const scoreTieBreakers = subjectColumns
+      .map(({ expression }) => `${expression} DESC`)
+      .join(',\n          ');
     const rows = (await this.dataSource.query(
       `
         SELECT
           "registration_number" AS "registrationNumber",
-          ${math}::text AS "math",
-          ${physics}::text AS "physics",
-          ${chemistry}::text AS "chemistry",
+          ${scoreSelections},
           ${total}::text AS "total"
         FROM "exam_results" AS results
-        WHERE ${math} IS NOT NULL
-          AND ${physics} IS NOT NULL
-          AND ${chemistry} IS NOT NULL
+        WHERE ${completeScoreConditions}
         ORDER BY
           ${total} DESC,
-          ${math} DESC,
-          ${physics} DESC,
-          ${chemistry} DESC,
+          ${scoreTieBreakers},
           "registration_number" ASC
         LIMIT $1
       `,
       [limit],
     )) as unknown;
     if (!Array.isArray(rows)) {
-      throw new Error('Top Group A query returned an unexpected result');
+      throw new Error('Top subject group query returned an unexpected result');
     }
-    return rows as GroupARow[];
+    return rows.map((row: Record<string, string>) => ({
+      registrationNumber: row.registrationNumber,
+      scores: Object.fromEntries(
+        group.subjects.map((subject) => [subject.code, row[subject.code]]),
+      ),
+      total: row.total,
+    }));
   }
 
   private subjectColumn(code: SubjectCode): string {
