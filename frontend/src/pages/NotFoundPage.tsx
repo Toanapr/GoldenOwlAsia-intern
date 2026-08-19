@@ -4,7 +4,7 @@ import { Card } from "../components/ui/Card";
 
 export function NotFoundPage() {
   return (
-    <Card className="border-t-4 border-t-brand-700 p-10 text-center sm:p-16">
+    <Card className="border-t-4 border-t-accent p-10 text-center sm:p-16">
       <p className="font-mono text-7xl font-extrabold tracking-[-0.08em] text-slate-200">
         404
       </p>
@@ -16,7 +16,7 @@ export function NotFoundPage() {
       </p>
       <Link
         to="/"
-        className="mt-7 inline-flex items-center gap-2 bg-brand-700 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-brand-800 focus-visible:outline-2"
+        className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-lg bg-accent px-5 py-3 text-base font-bold text-white transition-colors duration-200 hover:bg-brand-800 focus-visible:outline-2"
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
         Về trang tổng quan

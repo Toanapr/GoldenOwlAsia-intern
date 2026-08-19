@@ -44,15 +44,21 @@ function RankingTable({ students }: { students: GroupAStudent[] }) {
   return (
     <Card className="overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[680px] border-collapse text-left text-sm">
+        <table className="w-full border-collapse text-left text-sm">
           <caption className="sr-only">Top 10 thí sinh khối A</caption>
-          <thead className="sticky top-0 z-10 bg-[#0b1026] text-[10px] font-extrabold tracking-[0.12em] text-blue-50/60 uppercase">
+          <thead className="sticky top-0 z-10 bg-primary text-xs font-bold tracking-[0.1em] text-white uppercase">
             <tr>
               <th className="w-20 px-5 py-3.5 text-center">Hạng</th>
               <th className="px-5 py-3.5">Số báo danh</th>
-              <th className="px-5 py-3.5 text-right">Toán</th>
-              <th className="px-5 py-3.5 text-right">Vật lý</th>
-              <th className="px-5 py-3.5 text-right">Hóa học</th>
+              <th className="hidden px-5 py-3.5 text-right sm:table-cell">
+                Toán
+              </th>
+              <th className="hidden px-5 py-3.5 text-right sm:table-cell">
+                Vật lý
+              </th>
+              <th className="hidden px-5 py-3.5 text-right sm:table-cell">
+                Hóa học
+              </th>
               <th className="px-5 py-3.5 text-right">Tổng điểm</th>
             </tr>
           </thead>
@@ -62,8 +68,8 @@ function RankingTable({ students }: { students: GroupAStudent[] }) {
                 key={student.registrationNumber}
                 className={
                   student.position <= 3
-                    ? "bg-amber-50/25 hover:bg-amber-50/60"
-                    : "hover:bg-blue-50/50"
+                    ? "bg-amber-50/40 transition-colors duration-200 hover:bg-amber-50"
+                    : "transition-colors duration-200 hover:bg-brand-50"
                 }
               >
                 <td className="px-5 py-4 text-center">
@@ -75,16 +81,16 @@ function RankingTable({ students }: { students: GroupAStudent[] }) {
                 >
                   {student.registrationNumber}
                 </th>
-                <td className="px-5 py-4 text-right tabular-nums text-slate-600">
+                <td className="hidden px-5 py-4 text-right tabular-nums text-slate-600 sm:table-cell">
                   {scoreFormatter.format(student.math)}
                 </td>
-                <td className="px-5 py-4 text-right tabular-nums text-slate-600">
+                <td className="hidden px-5 py-4 text-right tabular-nums text-slate-600 sm:table-cell">
                   {scoreFormatter.format(student.physics)}
                 </td>
-                <td className="px-5 py-4 text-right tabular-nums text-slate-600">
+                <td className="hidden px-5 py-4 text-right tabular-nums text-slate-600 sm:table-cell">
                   {scoreFormatter.format(student.chemistry)}
                 </td>
-                <td className="px-5 py-4 text-right font-mono text-base font-extrabold tabular-nums text-brand-700">
+                <td className="px-5 py-4 text-right font-mono text-base font-bold tabular-nums text-accent">
                   {scoreFormatter.format(student.total)}
                 </td>
               </tr>
@@ -108,11 +114,11 @@ export function TopStudentsPage() {
         description="Xếp hạng theo tổng điểm Toán, Vật lý và Hóa học. Các tiêu chí phụ được áp dụng để kết quả luôn ổn định."
       />
 
-      <div className="flex flex-wrap gap-x-5 gap-y-2 border-y border-slate-200 py-3 text-[11px] font-semibold text-slate-500">
+      <div className="flex flex-wrap gap-x-5 gap-y-2 border-y border-slate-200 py-3 text-xs font-semibold text-muted-foreground">
         {["Đủ 3 môn", "Tổng điểm giảm dần", "SBD tăng dần khi đồng điểm"].map(
           (rule) => (
             <span key={rule} className="inline-flex items-center gap-1.5">
-              <span className="size-1 bg-[#c33149]" aria-hidden="true" /> {rule}
+              <span className="size-1.5 bg-accent" aria-hidden="true" /> {rule}
             </span>
           ),
         )}

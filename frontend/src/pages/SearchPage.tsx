@@ -21,13 +21,13 @@ function ScoreResult({ result }: { result: ScoreLookupData }) {
     <Card className="overflow-hidden">
       <div className="border-b border-slate-200 bg-slate-50 px-5 py-5 sm:flex sm:items-center sm:justify-between sm:px-7">
         <div>
-          <p className="text-[10px] font-bold tracking-[0.12em] text-slate-500 uppercase">
+          <p className="text-xs font-bold tracking-[0.12em] text-muted-foreground uppercase">
             Kết quả điểm thi
           </p>
           <h2
             ref={headingRef}
             tabIndex={-1}
-            className="mt-2 font-mono text-2xl font-bold tracking-wider text-slate-950 focus:outline-none"
+            className="mt-2 font-mono text-2xl font-bold tracking-wider text-foreground focus:outline-none"
           >
             {result.registrationNumber}
           </h2>
@@ -44,10 +44,10 @@ function ScoreResult({ result }: { result: ScoreLookupData }) {
             key={subject.subjectCode}
             className="bg-white px-4 py-5 transition-colors hover:bg-blue-50/50 sm:px-7 sm:py-6"
           >
-            <dt className="text-[10px] font-extrabold tracking-[0.12em] text-slate-400 uppercase">
+            <dt className="text-xs font-bold tracking-[0.1em] text-muted-foreground uppercase">
               {subject.subjectName}
             </dt>
-            <dd className="mt-3 font-mono text-2xl font-bold tabular-nums text-[#11162f]">
+            <dd className="mt-3 font-mono text-2xl font-bold tabular-nums text-foreground">
               {subject.score === null ? (
                 <span aria-label="Không có điểm" className="text-slate-300">
                   —
@@ -130,7 +130,7 @@ export function SearchPage() {
         <form onSubmit={handleSubmit} noValidate>
           <label
             htmlFor="registration-number"
-            className="text-[11px] font-extrabold tracking-[0.12em] text-slate-600 uppercase"
+            className="text-xs font-bold tracking-[0.12em] text-secondary uppercase"
           >
             Số báo danh
           </label>
@@ -147,7 +147,7 @@ export function SearchPage() {
                 aria-describedby="registration-hint registration-error"
                 aria-invalid={touched && !valid}
                 placeholder="Ví dụ: 01000001"
-                className="h-13 w-full border border-slate-300 bg-white px-4 font-mono text-lg font-semibold tracking-[0.12em] text-slate-950 placeholder:font-sans placeholder:text-sm placeholder:font-medium placeholder:tracking-normal placeholder:text-slate-400 focus:border-brand-600 focus:ring-2 focus:ring-blue-100 focus:outline-none aria-invalid:border-rose-400"
+                className="h-13 w-full rounded-lg border border-slate-300 bg-white px-4 font-mono text-lg font-bold tracking-[0.08em] text-foreground transition-colors duration-200 placeholder:font-sans placeholder:text-base placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:border-primary focus:ring-3 focus:ring-slate-200 focus:outline-none aria-invalid:border-rose-600"
               />
               <p
                 id="registration-hint"
@@ -165,7 +165,7 @@ export function SearchPage() {
             <button
               type="submit"
               disabled={!valid || query.isFetching}
-              className="group inline-flex h-13 shrink-0 items-center justify-center gap-3 bg-brand-700 px-6 text-sm font-bold text-white transition-colors hover:bg-brand-800 focus-visible:outline-2 disabled:cursor-not-allowed disabled:bg-slate-300 sm:self-start"
+              className="group inline-flex h-13 shrink-0 items-center justify-center gap-3 rounded-lg bg-accent px-6 text-base font-bold text-white transition-colors duration-200 hover:bg-brand-800 focus-visible:outline-2 disabled:bg-slate-300 sm:self-start"
             >
               <Search className="size-4" aria-hidden="true" />
               {query.isFetching ? "Đang tìm…" : "Tra cứu"}
@@ -181,7 +181,7 @@ export function SearchPage() {
       <section aria-live="polite" aria-label="Kết quả tra cứu">
         {!submittedNumber && (
           <Card className="border-dashed border-slate-300 bg-white/50 p-10 text-center sm:p-14">
-            <span className="mx-auto grid size-12 place-items-center border border-slate-300 text-brand-700">
+            <span className="mx-auto grid size-12 place-items-center rounded-lg border border-slate-300 text-accent">
               <Search className="size-6" aria-hidden="true" />
             </span>
             <p className="mt-4 text-sm font-bold text-slate-600">

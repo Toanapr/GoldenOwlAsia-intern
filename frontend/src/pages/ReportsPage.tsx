@@ -29,10 +29,18 @@ const compactFormatter = new Intl.NumberFormat("vi-VN", {
 });
 
 const bands = [
-  { key: "gte_8", label: "Từ 8 điểm", color: "#3b82f6" },
-  { key: "gte_6_lt_8", label: "Từ 6 đến dưới 8", color: "#6366f1" },
-  { key: "gte_4_lt_6", label: "Từ 4 đến dưới 6", color: "#f59e0b" },
-  { key: "lt_4", label: "Dưới 4 điểm", color: "#f43f5e" },
+  { key: "gte_8", label: "Từ 8 điểm", color: "var(--color-band-excellent)" },
+  {
+    key: "gte_6_lt_8",
+    label: "Từ 6 đến dưới 8",
+    color: "var(--color-band-good)",
+  },
+  {
+    key: "gte_4_lt_6",
+    label: "Từ 4 đến dưới 6",
+    color: "var(--color-band-average)",
+  },
+  { key: "lt_4", label: "Dưới 4 điểm", color: "var(--color-band-low)" },
 ] as const satisfies readonly {
   key: DistributionBandKey;
   label: string;
@@ -66,8 +74,8 @@ function DistributionTooltip({
 }) {
   if (!active || entries.length === 0) return null;
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl shadow-blue-950/10">
-      <p className="text-sm font-bold text-slate-950">{label}</p>
+    <div className="rounded-xl border border-border bg-surface p-4 shadow-md">
+      <p className="text-base font-bold text-foreground">{label}</p>
       <div className="mt-2 space-y-1.5">
         {entries.map((entry) => {
           const band = bands.find((item) => item.key === entry.key);
@@ -97,13 +105,13 @@ function DistributionTooltip({
 function DistributionTable({ subjects }: { subjects: SubjectDistribution[] }) {
   return (
     <details className="mt-6 border-t border-slate-100 pt-5">
-      <summary className="cursor-pointer text-sm font-extrabold text-brand-700 focus-visible:outline-2">
+      <summary className="flex min-h-11 cursor-pointer items-center text-base font-bold text-accent transition-colors duration-200 hover:text-brand-800 focus-visible:outline-2">
         Xem bảng số liệu chi tiết
       </summary>
-      <div className="mt-4 overflow-x-auto rounded-2xl border border-slate-200">
+      <div className="mt-4 overflow-x-auto rounded-xl border border-border">
         <table className="w-full min-w-[720px] border-collapse text-left text-sm">
           <caption className="sr-only">Bảng phân bố điểm theo chín môn</caption>
-          <thead className="bg-[#0b1026] text-[10px] font-extrabold tracking-wider text-blue-50/70 uppercase">
+          <thead className="bg-primary text-xs font-bold tracking-wider text-white uppercase">
             <tr>
               <th className="px-4 py-3">Môn</th>
               {bands.map((band) => (
@@ -179,14 +187,14 @@ export function ReportsPage() {
         <Card className="overflow-hidden p-0">
           <div className="flex flex-col gap-5 border-b border-slate-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
             <div className="flex items-center gap-3">
-              <span className="grid size-9 place-items-center border border-slate-300 text-brand-700">
+              <span className="grid size-11 place-items-center rounded-lg border border-slate-300 text-accent">
                 <Activity className="size-4" aria-hidden="true" />
               </span>
               <div>
-                <h2 className="text-sm font-extrabold text-[#11162f]">
+                <h2 className="text-base font-bold text-foreground">
                   Phân bổ theo khoảng điểm
                 </h2>
-                <p className="text-[10px] font-semibold text-slate-400">
+                <p className="text-xs font-normal text-muted-foreground">
                   9 môn thi · dữ liệu toàn quốc
                 </p>
               </div>
@@ -198,7 +206,7 @@ export function ReportsPage() {
               {bands.map((band) => (
                 <span
                   key={band.key}
-                  className="inline-flex items-center gap-2 text-[10px] font-bold text-slate-500"
+                  className="inline-flex items-center gap-2 text-xs font-bold text-muted-foreground"
                 >
                   <span
                     className="size-2.5 rounded-full"
@@ -211,19 +219,25 @@ export function ReportsPage() {
             </div>
           </div>
 
+          <p id="distribution-chart-summary" className="sr-only">
+            Biểu đồ cột ngang chồng so sánh số thí sinh thuộc bốn khoảng điểm
+            trên chín môn thi. Bảng số liệu chi tiết nằm ngay bên dưới biểu đồ.
+          </p>
           <div
             className="h-[540px] w-full min-w-0 px-2 py-6 sm:px-5"
-            aria-label="Biểu đồ phân bố điểm"
+            aria-label="Biểu đồ phân bố điểm theo chín môn thi"
+            aria-describedby="distribution-chart-summary"
             role="img"
           >
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
+                accessibilityLayer
                 data={chartData}
                 layout="vertical"
                 margin={{ top: 8, right: 12, bottom: 8, left: 8 }}
               >
                 <CartesianGrid
-                  stroke="#e8eeeb"
+                  stroke="var(--color-chart-grid)"
                   horizontal={false}
                   strokeDasharray="4 4"
                 />
@@ -233,9 +247,9 @@ export function ReportsPage() {
                     compactFormatter.format(value)
                   }
                   tick={{
-                    fill: "#7b8b84",
-                    fontSize: 10,
-                    fontFamily: "JetBrains Mono Variable",
+                    fill: "var(--color-chart-axis)",
+                    fontSize: 12,
+                    fontFamily: "Atkinson Hyperlegible",
                   }}
                   axisLine={false}
                   tickLine={false}
@@ -244,12 +258,16 @@ export function ReportsPage() {
                   type="category"
                   dataKey="subjectName"
                   width={92}
-                  tick={{ fill: "#30483f", fontSize: 11, fontWeight: 700 }}
+                  tick={{
+                    fill: "var(--color-chart-axis)",
+                    fontSize: 12,
+                    fontWeight: 700,
+                  }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <Tooltip
-                  cursor={{ fill: "#f0fdf7" }}
+                  cursor={{ fill: "var(--color-brand-50)" }}
                   content={(props) => (
                     <DistributionTooltip
                       active={props.active}
