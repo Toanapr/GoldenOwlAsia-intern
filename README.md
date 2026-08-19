@@ -29,6 +29,22 @@ npm run dev
 
 The backend runs at `http://localhost:3000`, its health endpoint is `http://localhost:3000/health`, and the frontend runs at `http://localhost:5173`.
 
+## Backend API
+
+Interactive Swagger documentation is available at `http://localhost:3000/docs`.
+
+```text
+GET /api/v1/scores/:registrationNumber
+GET /api/v1/reports/score-distribution
+GET /api/v1/reports/top-group-a
+GET /health
+GET /docs
+```
+
+Successful core API responses use a `{ data, meta }` envelope. Errors include `statusCode`, a stable application `code`, `message`, `details`, `path`, and an ISO timestamp.
+
+Group A includes candidates with all three Math, Physics and Chemistry scores. Results are ordered by total descending, then Math, Physics and Chemistry descending, and finally registration number ascending. This deterministic tie-break always returns at most ten candidates.
+
 ## Database and data import
 
 PostgreSQL runs in Docker on port `5432`. After applying migrations, import the supplied dataset with:
@@ -59,4 +75,7 @@ npm run test:integration -w backend
 npm run build
 ```
 
-The measured full-dataset import and query-plan results are recorded in [`docs/phase-02-benchmark.md`](docs/phase-02-benchmark.md).
+Measured full-dataset results are recorded in:
+
+- [`docs/phase-02-benchmark.md`](docs/phase-02-benchmark.md)
+- [`docs/phase-03-api-benchmark.md`](docs/phase-03-api-benchmark.md)
