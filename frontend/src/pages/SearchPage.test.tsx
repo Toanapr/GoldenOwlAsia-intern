@@ -72,8 +72,7 @@ describe("SearchPage", () => {
     const user = userEvent.setup();
     renderPage();
 
-    await user.type(screen.getByLabelText("Số báo danh"), "01000001");
-    await user.click(screen.getByRole("button", { name: "Tra cứu" }));
+    await user.type(screen.getByLabelText("Số báo danh"), "01000001{Enter}");
 
     expect(await screen.findByText("01000001")).toBeInTheDocument();
     expect(screen.getAllByLabelText("Không có điểm")).toHaveLength(3);

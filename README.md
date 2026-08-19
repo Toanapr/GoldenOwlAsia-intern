@@ -29,6 +29,15 @@ npm run dev
 
 The backend runs at `http://localhost:3000`, its health endpoint is `http://localhost:3000/health`, and the frontend runs at `http://localhost:5173`.
 
+The responsive frontend provides four routes:
+
+```text
+/               Dataset overview and shortcuts
+/search         Registration-number score lookup
+/reports        Nine-subject score distribution chart
+/top-students   Top 10 Group A ranking
+```
+
 ## Backend API
 
 Interactive Swagger documentation is available at `http://localhost:3000/docs`.
