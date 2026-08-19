@@ -23,5 +23,4 @@ npm-debug.log*
 # Local database and Docker data
 postgres_data/
 
-.
 plans/
