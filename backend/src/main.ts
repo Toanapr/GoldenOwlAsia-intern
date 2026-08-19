@@ -1,4 +1,3 @@
-import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -6,6 +5,7 @@ import {
   NestExpressApplication,
 } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
+import { configureApp } from './common/http/configure-app';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
@@ -13,23 +13,7 @@ async function bootstrap() {
     new ExpressAdapter(),
   );
   const configService = app.get(ConfigService);
-
-  app.setGlobalPrefix('api/v1', {
-    exclude: [
-      { path: 'health', method: RequestMethod.ALL },
-      { path: 'docs', method: RequestMethod.ALL },
-    ],
-  });
-  app.enableCors({
-    origin: configService.getOrThrow<string>('CORS_ORIGIN'),
-  });
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
+  configureApp(app);
 
   await app.listen(configService.getOrThrow<number>('PORT'));
 }
