@@ -1,5 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiServiceUnavailableResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ApiErrorResponseDto } from '../common/http/api-error-response.dto';
 import { ApiSuccessResponse, apiResponse } from '../common/http/api-response';
 import {
   ScoreDistributionDataDto,
@@ -19,6 +26,8 @@ export class ReportsController {
   @Get('score-distribution')
   @ApiOperation({ summary: 'Get score-band distribution for all subjects' })
   @ApiOkResponse({ type: ScoreDistributionResponseDto })
+  @ApiServiceUnavailableResponse({ type: ApiErrorResponseDto })
+  @ApiInternalServerErrorResponse({ type: ApiErrorResponseDto })
   async getScoreDistribution(): Promise<
     ApiSuccessResponse<ScoreDistributionDataDto>
   > {
@@ -28,6 +37,8 @@ export class ReportsController {
   @Get('top-group-a')
   @ApiOperation({ summary: 'Get the top 10 Group A candidates' })
   @ApiOkResponse({ type: TopGroupAResponseDto })
+  @ApiServiceUnavailableResponse({ type: ApiErrorResponseDto })
+  @ApiInternalServerErrorResponse({ type: ApiErrorResponseDto })
   async getTopGroupA(): Promise<ApiSuccessResponse<TopGroupADataDto>> {
     return apiResponse(await this.reportsService.getTopGroupA());
   }
