@@ -1,10 +1,12 @@
 # G-Scores
 
-Search and analyze more than one million results from Vietnam's 2024 National High School Graduation Examination. The project is built as a TypeScript modular monolith, with an emphasis on safe large-dataset imports, verifiable business rules, and a clear lookup experience across desktop and mobile devices.
+Search and analyze more than one million results from Vietnam's 2024 National High School Graduation Examination. The project combines a React frontend with a TypeScript modular-monolith backend, with an emphasis on verifiable business rules, memory-efficient data imports, and a clear lookup experience across desktop and mobile devices.
 
 **Live demo:** [Web app](https://goldenowlasia-intern.netlify.app/) · [Swagger API](https://g-scores-api-ea0ea7a5ceca.herokuapp.com/docs) · [Health check](https://g-scores-api-ea0ea7a5ceca.herokuapp.com/health)
 
-**Local:** [Web app](http://localhost:8080) · [Swagger API](http://localhost:3000/docs) · [Health check](http://localhost:3000/health)
+**Local Docker:** [Web app](http://localhost:8080) · [Swagger API](http://localhost:3000/docs) · [Health check](http://localhost:3000/health)
+
+**Sample registration number:** `01000001`
 
 ![G-Scores dashboard](screenshots/dashboard.png)
 
@@ -25,7 +27,7 @@ Search and analyze more than one million results from Vietnam's 2024 National Hi
 | -------- | ------------------------------------------------------------------ |
 | Frontend | React 19, Vite, TypeScript, Tailwind CSS, TanStack Query, Recharts |
 | Backend  | NestJS 11, TypeORM, Joi, Swagger, Helmet                           |
-| Database | PostgreSQL 17, Neon                                                |
+| Database | PostgreSQL (17-alpine locally, Neon in production)                 |
 | Testing  | Jest, Supertest, Vitest, React Testing Library                     |
 | Runtime  | Docker Compose, multi-stage Docker images, Nginx, Heroku, Netlify  |
 
@@ -58,7 +60,7 @@ This setup requires Node.js 22+, npm 10+, and Docker for PostgreSQL.
 
 ```bash
 cp .env.example .env
-npm install
+npm ci
 npm run db:up
 npm run migration:run
 npm run data:import -- --file=dataset/diem_thi_thpt_2024.csv
@@ -80,7 +82,7 @@ flowchart LR
   Importer --> DB
 ```
 
-The backend is a modular monolith. Modules are separated by capability (`exam-results`, `reports`, `data-import`, `subjects`, and `health`) but are deployed as a single process. This preserves clear boundaries without adding unnecessary microservice operational overhead for the scope of a technical assessment.
+The backend is a modular monolith. Modules are separated by capability (`exam-results`, `reports`, `data-import`, `subjects`, and `health`) but are deployed as a single process.
 
 The database uses one wide table for each examination result. Every candidate has exactly one row and the set of subjects is fixed, so lookups require no joins. Score and foreign-language-code constraints are enforced directly by PostgreSQL. Aggregation and Group A ranking are performed in SQL to avoid loading more than one million rows into Node.js.
 
@@ -130,10 +132,10 @@ Successful core API responses use a `{ data, meta }` envelope. Error responses c
 | Variable              | Used by          | Description                                              |
 | --------------------- | ---------------- | -------------------------------------------------------- |
 | `NODE_ENV`            | Backend          | `development`, `test`, or `production`                   |
-| `DATABASE_URL`        | Backend/importer | Pooled runtime URL, or the local PostgreSQL URL           |
-| `DATABASE_ADMIN_URL`  | Migrations       | Optional direct URL; falls back to `DATABASE_URL`         |
+| `DATABASE_URL`        | Backend/importer | Pooled runtime URL, or the local PostgreSQL URL          |
+| `DATABASE_ADMIN_URL`  | Migrations       | Optional direct URL; falls back to `DATABASE_URL`        |
 | `TEST_DATABASE_URL`   | Backend tests    | Separate database for integration and end-to-end tests   |
-| `PORT`                | Backend          | API port; Heroku supplies this in production              |
+| `PORT`                | Backend          | API port; Heroku supplies this in production             |
 | `CORS_ORIGIN`         | Backend          | Comma-separated origin allowlist; wildcards are rejected |
 | `VITE_API_URL`        | Frontend build   | Public API base URL embedded by Vite                     |
 | `DOCKER_CORS_ORIGIN`  | Compose          | Browser origins allowed to call the containerized API    |
@@ -142,11 +144,19 @@ Successful core API responses use a `{ data, meta }` envelope. Error responses c
 | `BACKEND_PORT`        | Compose          | Backend port exposed to the host                         |
 | `FRONTEND_PORT`       | Compose          | Frontend port exposed to the host                        |
 
-For production, set `DOCKER_CORS_ORIGIN` to the exact frontend domain and `DOCKER_VITE_API_URL` to the public HTTPS API URL before building the frontend image. Never place secrets in the image or in `VITE_*` variables because those values are publicly visible in the browser bundle.
+The deployed environments use the variables as follows:
+
+- Neon provides the pooled `DATABASE_URL` and the direct `DATABASE_ADMIN_URL` used by migrations.
+- Heroku uses `DATABASE_URL`, `DATABASE_ADMIN_URL`, and `CORS_ORIGIN`; Heroku supplies `PORT` automatically.
+- Netlify uses `VITE_API_URL` at build time to embed the public HTTPS API base URL.
+- `DOCKER_CORS_ORIGIN` and `DOCKER_VITE_API_URL` are only overrides for Docker Compose builds.
+
+Never place secrets in the image or in `VITE_*` variables because those values are publicly visible in the browser bundle.
 
 ## Quality checks
 
 ```bash
+npm run db:up
 npm run lint
 npm run typecheck
 npm test
@@ -155,19 +165,21 @@ npm run test:e2e -w backend
 npm run build
 ```
 
-Integration and end-to-end tests run against a real PostgreSQL database configured through `TEST_DATABASE_URL`. The test suite prioritizes high-risk rules: score-band boundaries, null handling, database constraints, idempotent imports, duplicate records within a batch, Group A tie-breaking, API errors, and frontend lookup states.
+Integration and end-to-end tests run against the real PostgreSQL test database configured through `TEST_DATABASE_URL`; `npm run db:up` creates it during the initial PostgreSQL setup. The test suite prioritizes high-risk rules: score-band boundaries, null handling, database constraints, idempotent imports, duplicate records within a batch, Group A tie-breaking, API errors, and frontend lookup states.
 
 ## Security and operations
 
-- Helmet provides HTTP security headers; CSP is managed by the frontend host so that Swagger UI remains functional.
+- Helmet provides HTTP security headers for the API. Its CSP middleware is disabled because Swagger UI requires inline assets.
 - CORS accepts only an exact origin allowlist and rejects `*`.
 - Joi fails fast when required environment variables are missing or invalid.
 - TypeORM always uses `synchronize: false`; schema changes are applied through migrations.
-- Production containers do not bind-mount source code. The dataset is mounted read-only and accessed only by the importer.
+- Production containers do not bind-mount source code. The dataset is mounted read-only for the explicit import command.
 - PostgreSQL, the backend, and the frontend all provide health checks; dependent services wait for healthy upstream services.
 
 ## Dataset and trade-offs
 
-The CSV file in `dataset/` is the dataset supplied with the assignment. The importer favors explicit validation, upsert support, and row-level error reporting, so it uses a streaming parser with batch inserts instead of PostgreSQL `COPY`. This approach is slower than raw `COPY`, but it provides better correctness guarantees while still processing all `1,061,605` rows without retaining the entire file in memory.
+The CSV file in `dataset/` is the dataset supplied with the assignment. The importer uses a streaming parser and batch upserts instead of PostgreSQL `COPY`. This provides row-level validation, bounded memory usage, and idempotent retries while still processing all `1,061,605` rows, at the cost of lower throughput than raw `COPY`.
 
-The project deliberately avoids Redis, CQRS, and microservices. Reports are straightforward SQL aggregations over a mostly read-only dataset, so the additional operational complexity would not provide a proportional benefit for this project.
+The import is not all-or-nothing: completed batches remain committed if a later row is invalid. After correcting the source row, rerunning the import safely upserts existing records without creating duplicates.
+
+Reports run directly against a mostly read-only dataset, so Redis, CQRS, and microservices are intentionally outside the current scope.
